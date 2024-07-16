@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static',filename='CSS/main.css')}}">
+{% endblock %}
+
+{% block body %}
+<body>
+    <h1>
+        ICF
+    </h1>
+    <h1> Enter this Location </h1>
+    <form id="address-form">
+        <input type ="text" id="address" name= "address" placeholder="Enter address" required>
+        <button type ="submit"> Go Location </button>
+    </form>
+    <button id="getLocationBtn">Get My Location</button>
+
+      <div id="result"></div>
+      <div id ="map"></div>
+      <script src="static/JS/scripts.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBfP1dUfUoR2G316xfHDmUTStk_FtJ53I&map_ids=4fceef255fc1a774&callback=initMap" async defer></script>
+</body>
+{% endblock %}
