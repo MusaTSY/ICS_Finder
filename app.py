@@ -8,15 +8,6 @@ googleAPI_KEY = 'AIzaSyDBfP1dUfUoR2G316xfHDmUTStk_FtJ53I'
 def index():
     return render_template("index.html")
 
-@app.route('/get-coordinates', methods=['POST'])
-def get_coordinates():
-    address = request.form.get('address')
-    if not address:
-        return jsonify({'error': 'No address provided'}), 400
-
-    response = long_lat(address)
-    return jsonify(response)
-
 def long_lat(address):
     url = f'https://maps.googleapis.com/maps/api/geocode/json?address={requests.utils.quote(address)}&key={googleAPI_KEY}'
     response = requests.get(url)
@@ -30,61 +21,51 @@ def long_lat(address):
     else:
         return {'error': f'Failed to connect to Google Maps API, status code {response.status_code}'}
 
+@app.route('/get-icf-details', methods=['POST'])
+def get_icf_details():
+    address = request.form.get('address')
+    if address:
+        response = long_lat(address)
+        return jsonify(response)
+
+    try:
+        data = request.get_json()
+        if data:
+            lat = data.get('latitude')
+            lon = data.get('longitude')
+            maxPrice = data.get('maxprice')
+            rating = data.get('rating')
+            Ice_cream_type = data.get('icecreamflavor')
+            OpenNow = data.get('OpenNow')
+
+            print(lat,lon,maxPrice,rating,Ice_cream_type,OpenNow)
+            # Parameters for the Google Places API request
+            params = {
+                'location': f'{lat},{lon}',
+                'radius': 1000,  # Search radius in meters
+                'key': googleAPI_KEY,            
+            }
+
+            if maxPrice:
+                params['maxprice'] = int(maxPrice)
+
+            # Make the request to the Google Places API
+            response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=params)
+            
+            if response.status_code != 200:
+                return jsonify({'error': 'Failed to fetch data from Google Places API'}), 500
+
+            # Parse the response
+            data = response.json()
+            ice_cream_shops = data.get('results', [])
+
+            return jsonify({'ice_cream_shops': ice_cream_shops})
+
+        else:
+            return jsonify({'error': 'No JSON data received'}), 400
+
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+    
 if __name__ == '__main__':
     app.run(debug=True)
-"""
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation Example</title>
-    <!-- Include any CSS or JS files needed -->
-</head>
-<body>
-    <h1>Geolocation Example</h1>
-
-    <button id="getLocationBtn">Get My Location</button>
-    
-    <p id="locationResult"></p>
-
-    <script>
-        document.getElementById('getLocationBtn').addEventListener('click', function() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    
-                    // Display or use the coordinates
-                    document.getElementById('locationResult').textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                    
-                    // Example: Send coordinates to Flask backend using fetch
-                    fetch('/process-location', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ latitude: latitude, longitude: longitude })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Response from Flask:', data);
-                        // Handle response from Flask if needed
-                    })
-                    .catch(error => {
-                        console.error('Error sending location to Flask:', error);
-                    });
-
-                }, function(error) {
-                    console.error("Error getting geolocation:", error);
-                    document.getElementById('locationResult').textContent = 'Error getting geolocation.';
-                });
-            } else {
-                console.log("Geolocation is not supported by this browser.");
-                document.getElementById('locationResult').textContent = 'Geolocation is not supported by this browser.';
-            }
-        });
-    </script>
-</body>
-</html>
-"""
