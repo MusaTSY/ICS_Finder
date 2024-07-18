@@ -1,46 +1,110 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="{{url_for('static',filename='CSS/main.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='CSS/main.css')}}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBfP1dUfUoR2G316xfHDmUTStk_FtJ53I&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
 
 {% block body %}
 <body>
-    <h1>
-        ICF
-    </h1>
-    <form id ="ICF-details-form">
-        <label for="address" > Enter Addy </label>
-        <input type ="text" id="address" name= "address" placeholder="Specific Location">
-        <label for="budget" >Price Level</label>
-        <input type="number" id="budget" name="budget" placeholder="budget" min="0" max="4" required>
-        <script>
-            document.getElementById('budget').value = 3;
-        </script>
-        <label for="icecreamflavor" > Flavor </label>
-        <input type="text" id="icecreamflavor" name="icecreamflavor" placeholder="Ice Cream Flavor">
-        <script>
-            document.getElementById('icecreamflavor').value = "Vanilla";
-        </script>
-    
-        <label for="OpenNow" >Open Now</label>
-        <input type="checkbox" id="OpenNow" name="OpenNow" value="true">
-        <script>
-            document.getElementById('OpenNow').checked = true;
-        </script>
-        <label for = "rating"> Rating </label>
-        <input type="number" id="rating" name="rating" placeholder="rating" min="1" max="5" step = "0.1">
-        <script>
-            document.getElementById('rating').value = 4.5;
-        </script>
+    <h1>ICF</h1>
+    <form id="ICF-details-form">
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" placeholder="Enter specific location">
+        </div>
 
-        <button type = 'submit' id="getLocationBtn">Current Location</button>
+        <div class="form-group">
+            <label for="budget">Price Level</label>
+            <select id="budget" name="budget">
+                <option value="0">$0-$10</option>
+                <option value="1">$10-$20</option>
+                <option value="2" selected>$20-$30</option>
+                <option value="3">$30-$50</option>
+                <option value="4">$50+</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="icecreamflavor">Flavor</label>
+            <select id="icecreamflavor" name="icecreamflavor">
+                <option value="Vanilla">Vanilla</option>
+                <option value="Chocolate">Chocolate</option>
+                <option value="Strawberry">Strawberry</option>
+                <option value="Mint">Mint</option>
+                <option value="Caramel">Caramel</option>
+                <option value="Vanilla Bean">Vanilla Bean</option>
+                <option value="Chocolate Fudge Brownie">Chocolate Fudge Brownie</option>
+                <option value="Strawberry Cheesecake">Strawberry Cheesecake</option>
+                <option value="Cookies and Cream">Cookies and Cream</option>
+                <option value="Mint Chocolate Chip">Mint Chocolate Chip</option>
+                <option value="Salted Caramel">Salted Caramel</option>
+                <option value="Coffee Crunch">Coffee Crunch</option>
+                <option value="Rocky Road">Rocky Road</option>
+                <option value="Pistachio">Pistachio</option>
+                <option value="Coconut Almond">Coconut Almond</option>
+                <option value="Birthday Cake">Birthday Cake</option>
+                <option value="Peanut Butter Swirl">Peanut Butter Swirl</option>
+                <option value="Lemon Sorbet">Lemon Sorbet</option>
+                <option value="Matcha Green Tea">Matcha Green Tea</option>
+                <option value="Black Raspberry Chip">Black Raspberry Chip</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="OpenNow">Open Now</label>
+            <input type="checkbox" id="OpenNow" name="OpenNow" value="true">
+            <script>document.getElementById('OpenNow').checked = true;</script>
+        </div>
+
+        <div class="form-group">
+            <label for="rating">Rating</label>
+            <input type="number" id="rating" name="rating" placeholder="Rating" min="1" max="5" step="0.1" value="4">
+        </div>
+
+        <button type="submit" id="getLocationBtn">Current Location</button>
+        <div id="result"></div>
+        <div id="map"></div>
     </form>
-    
+    <script>
+        function checkAddress() {
+            const addressInput = document.getElementById('address').value.trim();
+            const getLocationButton = document.getElementById('getLocationBtn');
 
-      <div id="result"></div>
-      <div id ="map"></div>
-      <script src="static/JS/scripts.js"></script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBfP1dUfUoR2G316xfHDmUTStk_FtJ53I&map_ids=4fceef255fc1a774&callback=initMap" async defer></script>
+            if (addressInput === '') {
+                getLocationButton.textContent = 'Current Location';
+            } else {
+                getLocationButton.textContent = 'Find Address';
+            }
+        }
+        checkAddress();
+
+        document.getElementById('address').addEventListener('input', checkAddress);
+    </script>
+
+    <script>
+        function initAutocomplete() {
+            var addressInput = document.getElementById('address');
+            var autocomplete = new google.maps.places.Autocomplete(addressInput);
+            
+            autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
+
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry) {
+                    console.log("No details available for input: '" + place.name + "'");
+                    return;
+                }
+
+                console.log('Selected place:', place);
+            });
+        }
+        window.initAutocomplete = initAutocomplete;
+    </script>
+
+    
+    <script src="{{ url_for('static', filename='JS/scripts.js') }}"></script>
 </body>
 {% endblock %}

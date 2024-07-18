@@ -35,23 +35,28 @@ def get_icf_details():
             lon = data.get('longitude')
             maxPrice = data.get('maxprice')
             rating = data.get('rating')
-            Ice_cream_type = data.get('icecreamflavor')
+            Ice_cream_type = data.get('Ice_cream_type')
             OpenNow = data.get('OpenNow')
+            print(type(Ice_cream_type))
 
             print(lat,lon,maxPrice,rating,Ice_cream_type,OpenNow)
             # Parameters for the Google Places API request
             params = {
-                'location': f'{lat},{lon}',
-                'radius': 1000,  # Search radius in meters
-                'key': googleAPI_KEY,            
+            'location': f'{lat},{lon}',
+            'radius': 10,  # Search radius in meters
+            'query': f'ice cream {Ice_cream_type}',  # Text search query including dynamic input
+            'key': googleAPI_KEY,
             }
 
             if maxPrice:
                 params['maxprice'] = int(maxPrice)
+            if OpenNow:
+                params['opennow'] = OpenNow
+            
 
             # Make the request to the Google Places API
-            response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=params)
-            
+            response = requests.get('https://maps.googleapis.com/maps/api/place/textsearch/json', params=params)
+                    
             if response.status_code != 200:
                 return jsonify({'error': 'Failed to fetch data from Google Places API'}), 500
 
@@ -59,7 +64,13 @@ def get_icf_details():
             data = response.json()
             ice_cream_shops = data.get('results', [])
 
-            return jsonify({'ice_cream_shops': ice_cream_shops})
+            if rating:
+                rating = float(rating)
+                filtered_results = [shop for shop in ice_cream_shops if shop.get('rating', 0) >= rating]
+            else:
+                filtered_results = ice_cream_shops
+
+            return jsonify({'ice_cream_shops': filtered_results})
 
         else:
             return jsonify({'error': 'No JSON data received'}), 400

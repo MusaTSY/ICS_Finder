@@ -96,6 +96,7 @@ document.getElementById('ICF-details-form').addEventListener('submit', function(
     const OpenNow = document.getElementById('OpenNow').checked;
     const ratings = document.getElementById('rating').value;
     const Ice_cream_type = document.getElementById('icecreamflavor').value.trim();
+    
 
     const address = document.getElementById('address').value;
     if (address){
@@ -111,7 +112,7 @@ document.getElementById('ICF-details-form').addEventListener('submit', function(
             if (data.error) {
                 document.getElementById('result').textContent = data.error;
             } else {
-                document.getElementById('result').textContent = `Latitude: ${data.lat}, Longitude: ${data.lng}`; //Not Needed in final 
+               // document.getElementById('result').textContent = `Latitude: ${data.lat}, Longitude: ${data.lng}`; //Not Needed in final 
                 initMap(data.lat, data.lng);
                 updateCurrentLocationMarker(data.lat, data.lng); 
                 fetchIceCreamShops(data.lat, data.lng, maxPrice, OpenNow,ratings,Ice_cream_type); 
@@ -126,7 +127,7 @@ document.getElementById('ICF-details-form').addEventListener('submit', function(
                 const longitude = position.coords.longitude;
             
 
-                document.getElementById('result').textContent = `Latitude: ${latitude}, Longitude: ${longitude}, Maxprice: ${maxPrice}`;//Not Needed in final 
+                //document.getElementById('result').textContent = `Latitude: ${latitude}, Longitude: ${longitude}, Maxprice: ${maxPrice}`;//Not Needed in final 
                 initMap(latitude, longitude);
                 updateCurrentLocationMarker(latitude, longitude);
                 fetchIceCreamShops(latitude, longitude, maxPrice,OpenNow,ratings,Ice_cream_type)//fetchesthe information from the flask backend
