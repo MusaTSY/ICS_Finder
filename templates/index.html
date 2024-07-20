@@ -8,27 +8,33 @@
 
 {% block body %}
 <body>
-    <h1>ICF</h1>
+    <h1>Ice Cream Finder</h1>
     <form id="ICF-details-form">
-        <div class="form-group">
+        <div class="col-3 input-effect">
             <label for="address">Address</label>
-            <input type="text" id="address" name="address" placeholder="Enter specific location">
+            <input class="effect-19" type="text" id="address" name="address" placeholder="Enter specific location">
+            <span class="focus-border">
+                <i></i>
+            </span>
         </div>
 
-        <div class="form-group">
+        <div class="col-3 input-effect">
             <label for="budget">Price Level</label>
-            <select id="budget" name="budget">
+            <select id="budget" name="budget" class="effect-19">
                 <option value="0">$0-$10</option>
                 <option value="1">$10-$20</option>
                 <option value="2" selected>$20-$30</option>
                 <option value="3">$30-$50</option>
                 <option value="4">$50+</option>
             </select>
+            <span class="focus-border">
+                <i></i>
+            </span>
         </div>
 
-        <div class="form-group">
+        <div class="col-3 input-effect">
             <label for="icecreamflavor">Flavor</label>
-            <select id="icecreamflavor" name="icecreamflavor">
+            <select id="icecreamflavor" name="icecreamflavor" class="effect-19">
                 <option value="Vanilla">Vanilla</option>
                 <option value="Chocolate">Chocolate</option>
                 <option value="Strawberry">Strawberry</option>
@@ -50,22 +56,31 @@
                 <option value="Matcha Green Tea">Matcha Green Tea</option>
                 <option value="Black Raspberry Chip">Black Raspberry Chip</option>
             </select>
+            <span class="focus-border">
+                <i></i>
+            </span>
         </div>
 
-        <div class="form-group">
+        <div class="col-3 input-effect">
             <label for="OpenNow">Open Now</label>
-            <input type="checkbox" id="OpenNow" name="OpenNow" value="true">
+            <input class="effect-19" type="checkbox" id="OpenNow" name="OpenNow" value="true">
             <script>document.getElementById('OpenNow').checked = true;</script>
         </div>
 
-        <div class="form-group">
+        <div class="col-3 input-effect">
             <label for="rating">Rating</label>
-            <input type="number" id="rating" name="rating" placeholder="Rating" min="1" max="5" step="0.1" value="4">
+            <input class="effect-19" type="number" id="rating" name="rating" placeholder="Rating" min="1" max="5" step="0.1" value="4">
+            <span class="focus-border">
+                <i></i>
+            </span>
         </div>
-
-        <button type="submit" id="getLocationBtn">Current Location</button>
-        <div id="result"></div>
+        <div class="col-3 input-effect"></div>
+            <div id="result">Slurping Around!</div>
+        </div>
+        <button class ="btn" type="submit" id="getLocationBtn">Current Location</button>
+        
         <div id="map"></div>
+        
     </form>
     <script>
         function checkAddress() {
