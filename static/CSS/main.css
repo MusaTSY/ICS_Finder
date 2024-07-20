@@ -1,25 +1,40 @@
 
 body {
     font-family: 'Playwrite CL', Arial, sans-serif;
-    background-color: #f9f9f9;
-    padding: 20px;
+    background: rgb(7, 248, 189);
+    background: linear-gradient(90deg, rgba(7, 248, 189, 1) 0%, rgba(0, 219, 255, 1) 100%);
+    padding: 10px; /* Adjust padding for smaller screens */
+    background-size: cover;
 }
-
-h1 {
-    font-family: 'Playwrite CL', Arial, sans-serif;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Apply 'Playwrite CL' wherever desired */
 
 form {
-    max-width: 600px;
+    position: relative;
+    max-width: 100%; /* Adjust max-width for smaller screens */
     margin: 0 auto;
-    background: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(66, 184, 20, 0.4);
+    overflow: hidden;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px; /* Adjust padding for smaller screens */
+    font-size: 16px;
+}
+
+form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("iceb1.jpg");
+    background-size: cover;
+    filter: blur(3px); /* Adjust the blur amount as per your preference */
+    z-index: -1; /* Place the pseudo-element behind the form content */
 }
 
 button {
@@ -48,7 +63,7 @@ button:hover {
     margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 3, 192, 0.336);
 }
 
 .input-effect {
@@ -61,7 +76,7 @@ button:hover {
     top: -16px;
     left: 10px;
     font-size: 14px;
-    color: #999;
+    color: #000000;
     pointer-events: none;
     transition: 0.2s ease all;
 }
@@ -71,13 +86,13 @@ button:hover {
 .input-effect select {
     font-family: "Exo 2", sans-serif;
     width: 100%;
-    padding: 20px 20px 10px 5px;
+    padding: 12px; /* Adjust padding for smaller screens */
     display: block;
     border: none;
     border-bottom: 1px solid #ccc;
     background: transparent;
     font-size: 16px;
-    color: #333;
+    color: #000000;
 }
 .input-effect input{
     padding: 20px 20px 10px 10px;
@@ -153,13 +168,13 @@ button:hover {
     transform: scale(1.05) rotate(-1deg);
   }
         /* Styling the checkbox */
-.input-effect input[type="checkbox"].effect-19 {
+        .input-effect input[type="checkbox"].effect-19 {
             appearance: none;
             -webkit-appearance: none;
-            top: 15px;
-            left: 5px;
-            width: 20px;
-            height: 20px;
+            top: 14px;
+            left: 8px;
+            width: 25px; /* Increase size for better touch target */
+            height: 25px; /* Increase size for better touch target */
             background-color: #c2fbd7;
             border-radius: 4px;
             box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,
@@ -172,8 +187,9 @@ button:hover {
             transition: all 250ms;
             position: relative;
             display: inline-block;
+            margin-right: 10px; /* Adjust spacing between checkboxes and labels */
         }
-
+        
         .input-effect input[type="checkbox"].effect-19:checked {
             background-color: green;
             box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset,
@@ -183,27 +199,51 @@ button:hover {
                         rgba(44, 187, 99, .25) 0 8px 16px,
                         rgba(44, 187, 99, .25) 0 16px 32px;
         }
-
+        
         .input-effect input[type="checkbox"].effect-19:checked::after {
             content: '';
             position: absolute;
-            top: 5px;
-            left: 5px;
-            width: 20px;
-            height: 20px;
-            background-image: url('ice_cream.png'); /* URL to your checkmark image */
-            border-radius: 2px;
-            background-size:100%; /* Adjust the background size property */
-           
+            top: -3px;
+            left: -3px;
+            width: 35px; /* Increase size of checkmark for better visibility */
+            height: 35px; /* Increase size of checkmark for better visibility */
+            background-image: url('Ice_creamCheckIcon.png'); /* URL to your checkmark image */
+            background-size: 100%; /* Adjust the background size property */
         }
-
+        
         .input-effect input[type="checkbox"].effect-19:hover {
-            transform: scale(1.10);
+            transform: scale(1.1); /* Increase scale on hover for better feedback */
         }
+        
+        @media screen and (max-width: 600px) {
+            .input-effect input[type="checkbox"].effect-19 {
+                width: 20px; /* Adjust size for smaller screens */
+                height: 20px; /* Adjust size for smaller screens */
+            }
+        
+            .input-effect input[type="checkbox"].effect-19:checked::after {
+                width: 25px; /* Adjust checkmark size for smaller screens */
+                height: 25px; /* Adjust checkmark size for smaller screens */
+            }
+        }
+        
+
 .input-effect input::placeholder,
 .input-effect select::placeholder {
     font-family: "Exo 2", sans-serif;
     font-weight: 400; /* Adjust the font weight as needed */
     font-size: 16px; /* Adjust the font size as needed */
     color: #999; /* Adjust the color of the placeholder text */
+}
+/* For screens smaller than 600px (typical width for mobile devices) */
+@media screen and (max-width: 600px) {
+    form {
+        padding: 10px; /* Adjust padding for smaller screens */
+        max-width: 100%; /* Ensure form takes full width of viewport */
+    }
+    .input-effect input,
+    .input-effect select {
+        padding: 12px; /* Adjust padding for smaller inputs */
+    }
+    /* Adjust any other styles as needed */
 }

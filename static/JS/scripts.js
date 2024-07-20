@@ -9,7 +9,7 @@ let currentLocationImage="static/Image/map_marker_2.png"
 function initMap(lat =40.709343434451945, lng = -74.00235215927385) {
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: lat, lng: lng },
-        zoom: 15,
+        zoom: 12,
         mapId: '4fceef255fc1a774',
         fullscreenControl: false
     });
